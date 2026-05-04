@@ -23,11 +23,7 @@ public class Fleet {
     }
 
     public void reset() {
-        for (Ship ship : Ship.values()) {
-            if (!alive.contains(ship)) {
-                alive.add(ship);
-            }
-        }
+        alive.addAll(EnumSet.allOf(Ship.class));
     }
 
     

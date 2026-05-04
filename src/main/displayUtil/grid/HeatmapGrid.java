@@ -68,7 +68,8 @@ public class HeatmapGrid extends AbstractGrid {
 
     private void place(int xShip, int yShip, int dx, int dy, int length) {
         for (int i = 0; i < length; i++) {
-            if (placementGrid.getOccupied().contains(new Point(xShip + i * dx, yShip + i * dy)))
+            Point cell = new Point(xShip + i * dx, yShip + i * dy);
+            if (placementGrid.getMisses().contains(cell) || placementGrid.getSunks().contains(cell))
                 return;
         }
 
@@ -109,7 +110,7 @@ public class HeatmapGrid extends AbstractGrid {
         Vec2d averageSunkPosition = placementGrid.getAverageSunkPosition();
         for (int x = 0; x < cols; x++) {
             for (int y = 0; y < rows; y++) {
-                values[x][y] += MathUtils.getDistance(new Vec2d(x, y), averageSunkPosition) / 28;
+                values[x][y] += MathUtils.getDistanceSquared(new Vec2d(x, y), averageSunkPosition) / 28;
             }
         }
     }
@@ -163,15 +164,18 @@ public class HeatmapGrid extends AbstractGrid {
                 }
             }
 
-            drawGridLines(g);
         }
+
+        drawGridLines(g);
+
     }
 
     @Override
-    public void handleMousePress(MouseEvent e) {
-    }
+    public void handleMousePress(MouseEvent e) {}
 
     @Override
-    public void handleMouseRelease(MouseEvent e) {
-    }
+    public void handleMouseRelease(MouseEvent e) {}
+
+    @Override
+    public void handleMouseClick(MouseEvent e) {}
 }

@@ -10,7 +10,7 @@ import displayUtil.Bounds;
 import displayUtil.Corner;
 import math.Vec2d;
 
-public class Display {
+public class Display implements DisplayComponent {
     private Vec2d pos;
     private Vec2d dimensions;
 
@@ -32,13 +32,20 @@ public class Display {
 
         this.exteriorBounds = new Bounds(pos, new Vec2d(pos.x + dimensions.x, pos.y + dimensions.y));
         this.interiorBounds = new Bounds(
-                new Vec2d(exteriorBounds.getMin().x + borderLength, exteriorBounds.getMin().y + borderLength),
-                new Vec2d(exteriorBounds.getMax().x - borderLength, exteriorBounds.getMax().y - borderLength));
+            new Vec2d(
+                exteriorBounds.getMin().x + borderLength, 
+                exteriorBounds.getMin().y + borderLength
+            ),
+            new Vec2d(
+                exteriorBounds.getMax().x - borderLength, 
+                exteriorBounds.getMax().y - borderLength
+            )
+        );
 
         this.components = new ArrayList<>();
     }
 
-    public Vec2d getCorner(Bounds bounds, Corner corner, Vec2d offset) {
+    public Vec2d getCorner(Bounds bounds, Corner corner) {
         double x = (corner == Corner.TOP_RIGHT || corner == Corner.BOTTOM_RIGHT)
                 ? bounds.getMax().x
                 : bounds.getMin().x;
@@ -47,15 +54,15 @@ public class Display {
                 ? bounds.getMax().y
                 : bounds.getMin().y;
 
-        return new Vec2d(x + offset.x, y + offset.y);
+        return new Vec2d(x, y);
     }
 
-    public Vec2d getInteriorCorner(Corner c, Vec2d offset) {
-        return getCorner(interiorBounds, c, offset);
+    public Vec2d getInteriorCorner(Corner c) {
+        return getCorner(interiorBounds, c);
     }
 
-    public Vec2d getExteriorCorner(Corner c, Vec2d offset) {
-        return getCorner(exteriorBounds, c, offset);
+    public Vec2d getExteriorCorner(Corner c) {
+        return getCorner(exteriorBounds, c);
     }
 
     public Vec2d getDimensions() {
@@ -93,9 +100,11 @@ public class Display {
     }
 
     public void update() {
-        for (DisplayComponent c : components) {
-            c.update();
-        }
+        components.forEach(
+            c -> {
+                c.update();
+            }
+        );
     }
 
     public void draw(Graphics g) {
@@ -128,21 +137,35 @@ public class Display {
 
     public void drawComponents(Graphics g) {
         if (!components.isEmpty()) {
-            for (DisplayComponent c : components) {
-                c.draw(g);
-            }
+            components.forEach(
+                component -> {
+                    component.draw(g);
+                }
+            );
         }
     }
 
     public void handleMousePress(MouseEvent e) {
-        for (DisplayComponent c : components) {
-            c.handleMousePress(e);
-        }
+        components.forEach(
+            component -> {
+                component.handleMousePress(e);
+            }
+        );
     }
 
     public void handleMouseRelease(MouseEvent e) {
-        for (DisplayComponent c : components) {
-            c.handleMouseRelease(e);
-        }
+        components.forEach(
+            component -> {
+                component.handleMouseRelease(e);
+            }
+        );
+    }
+
+    public void handleMouseClick(MouseEvent e) {
+        components.forEach(
+            component -> {
+                component.handleMouseClick(e);
+            }
+        );
     }
 }

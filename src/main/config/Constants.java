@@ -7,7 +7,6 @@ public class Constants {
     public static final Color COLD_COLOR = Color.BLUE;
 
     public static final double HIT_DETERMINANT_FACTOR = 25;
-    public static final double HORIZONTAL_DETERMINANT_FACTOR = 1;
 
     public static final Color ACTIVE_SHIP_COLOR = new Color(0, 191, 160);
     public static final Color DEACTIVE_SHIP_COLOR = new Color(253, 89, 111);

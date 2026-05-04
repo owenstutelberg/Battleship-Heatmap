@@ -12,6 +12,7 @@ public class PlacementGrid extends AbstractGrid {
     private final CellState[][] cells;
     private final Set<Point> occupied = new HashSet<>();
     private final Set<Point> hits = new HashSet<>();
+    private final Set<Point> misses = new HashSet<>();
     private final Set<Point> sunks = new HashSet<>();
 
     public PlacementGrid(Vec2d pos, int cols, int rows, Vec2d dims) {
@@ -30,6 +31,7 @@ public class PlacementGrid extends AbstractGrid {
 
         occupied.clear();
         hits.clear();
+        misses.clear();
         sunks.clear();
     }
 
@@ -39,6 +41,14 @@ public class PlacementGrid extends AbstractGrid {
 
     public Set<Point> getHits() {
         return hits;
+    }
+
+    public Set<Point> getMisses() {
+        return misses;
+    }
+
+    public Set<Point> getSunks() {
+        return sunks;
     }
 
     public Vec2d getAverageSunkPosition() {
@@ -86,6 +96,10 @@ public class PlacementGrid extends AbstractGrid {
 
         if (next.isOccupied()) occupied.add(cellPos); else occupied.remove(cellPos);
         if (next.isHit()) hits.add(cellPos); else hits.remove(cellPos);
+        if (next.isMiss()) misses.add(cellPos); else misses.remove(cellPos);
         if (next.isSunk()) sunks.add(cellPos); else sunks.remove(cellPos);
     }
+
+    @Override
+    public void handleMouseClick(MouseEvent e) {}
 }

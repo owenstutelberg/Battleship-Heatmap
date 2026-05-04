@@ -22,6 +22,10 @@ public enum CellState {
         return this == HIT;
     }
 
+    public boolean isMiss() {
+        return this == MISS;
+    }
+
     public boolean isSunk() {
         return this == SUNK;
     }

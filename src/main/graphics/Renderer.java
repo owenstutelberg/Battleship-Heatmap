@@ -31,6 +31,11 @@ public class Renderer extends JPanel {
             public void mousePressed(MouseEvent e) {
                 screen.handleMousePress(e);
             }
+
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                screen.handleMouseClick(e);
+            }
         });
     }
 

@@ -8,4 +8,5 @@ public interface DisplayComponent {
     public void draw(Graphics g);
     public void handleMousePress(MouseEvent e);
     public void handleMouseRelease(MouseEvent e);
+    public void handleMouseClick(MouseEvent e);
 }

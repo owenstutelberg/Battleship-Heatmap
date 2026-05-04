@@ -40,4 +40,7 @@ public class TextBox implements DisplayComponent {
         
     }
 
+    @Override
+    public void handleMouseClick(MouseEvent e) {}
+
 }

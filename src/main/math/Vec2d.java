@@ -1,5 +1,6 @@
 package math;
 
+import java.awt.Dimension;
 import java.awt.Point;
 
 public class Vec2d {
@@ -24,5 +25,18 @@ public class Vec2d {
     public Vec2d(Point p) {
         this.x = p.getX();
         this.y = p.getY();
+    }
+
+    public Vec2d(Dimension d) {
+        this.x = d.getWidth();
+        this.y = d.getHeight();
+    }
+
+    public Vec2d add(Vec2d v) {
+        return new Vec2d(this.x + v.x, this.y + v.y);
+    }
+
+    public Vec2d scale(double scalar) {
+        return new Vec2d(this.x * scalar, this.y * scalar);
     }
 }

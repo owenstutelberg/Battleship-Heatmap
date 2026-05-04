@@ -1,6 +1,7 @@
 package toggles;
 
 import java.awt.Color;
+import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.event.MouseEvent;
 
@@ -9,22 +10,70 @@ import math.Vec2d;
 import ui.DisplayComponent;
 
 public class Button implements DisplayComponent {
-    private Vec2d pos;
-    private Vec2d dims;
-    private double radius;
+    // private Vec2d dims;
+    // private Vec2d pos;
+    // private Vec2d pressedDims;
+    // private Vec2d pressedPos;
+    // private double radius;
+    // private Bounds bounds;
+    // private Color color = Color.WHITE;
+    // private boolean isPressed = false;
+
+    // private int presses = 0;
+    // private int releases = 0;
+
     private Bounds bounds;
-    private Color color = Color.WHITE;
+
+    private Vec2d pos;
+
+    private Vec2d pressedPos;
+
+    private Dimension dims;
+
+    private Dimension pressedDims;
+
+    private double radius;
+
+    private Color color;
 
     private Runnable[] onClick;
 
-    public Button(Vec2d pos, Vec2d dims, double radius, Color color, Runnable... onClick) {
-        this.pos = pos;
-        this.dims = dims;
-        this.radius = radius;
-        this.color = color;
-        this.onClick = onClick;
+    private boolean isPressed = false;
 
-        this.bounds = new Bounds(pos, new Vec2d(pos.x + dims.x, pos.y + dims.y));
+    public Button(Bounds bounds, double radius, Color color, Runnable... onClick) {
+        this.bounds = bounds;
+
+        this.pos = bounds.getMin();
+
+        this.pressedPos = bounds.scaleSameCenter(0.95).getMin();
+
+        this.dims = bounds.getDimensions();
+
+        this.pressedDims = bounds.scaleSameCenter(0.95).getDimensions();
+
+        this.radius = radius;
+
+        this.color = color;
+
+        this.onClick = onClick;
+    }
+
+    public Button(Vec2d pos, Dimension dims, double radius, Color color, Runnable... onClick) {
+        this.bounds = new Bounds(pos, pos.add(new Vec2d(dims)));
+
+        this.pos = pos;
+
+        this.pressedPos = bounds.scaleSameCenter(0.95).getMin();
+
+        this.dims = dims;
+
+        this.pressedDims = bounds.scaleSameCenter(0.95).getDimensions();
+
+        this.radius = radius;
+
+        this.color = color;
+
+        this.onClick = onClick;
     }
 
     public void setColor(Color c) {
@@ -32,42 +81,60 @@ public class Button implements DisplayComponent {
     }
 
     @Override
-    public void update() {
-    }
+    public void update() {}
 
     @Override
     public void draw(Graphics g) {
         g.setColor(color);
-        g.fillRoundRect((int) pos.x, (int) pos.y, (int) dims.x, (int) dims.y, (int) radius, (int) radius);
+
+        if (isPressed) {
+            g.fillRoundRect(
+                (int) pressedPos.x,
+                (int) pressedPos.y,
+                (int) pressedDims.getWidth(),
+                (int) pressedDims.getHeight(),
+                (int) radius,
+                (int) radius
+            );
+        } else {
+            g.fillRoundRect(
+                (int) pos.x, 
+                (int) pos.y, 
+                (int) dims.getWidth(), 
+                (int) dims.getHeight(), 
+                (int) radius, 
+                (int) radius
+            );
+        }
     }
 
     @Override
     public void handleMousePress(MouseEvent e) {
-        if (!bounds.contains(e.getPoint()))
-            return;
+        if (!bounds.contains(e.getPoint())) return;
 
-        dims.x *= 0.95;
-        dims.y *= 0.95;
-
-        pos.x += dims.x * 0.025;
-        pos.y += dims.y * 0.025;
-
+        isPressed = true;
     }
 
     @Override
     public void handleMouseRelease(MouseEvent e) {
-        if (!bounds.contains(e.getPoint()))
-            return;
+        isPressed = false;
 
-        pos.x -= dims.x * 0.025;
-        pos.y -= dims.y * 0.025;
-
-        dims.x /= 0.95;
-        dims.y /= 0.95;
+        if (!bounds.contains(e.getPoint())) return;
 
         for (Runnable task : onClick) {
             if (task != null)
                 task.run();
         }
+    }
+
+    @Override
+    public void handleMouseClick(MouseEvent e) {
+        // isPressed = false;
+
+        // if (!bounds.contains(e.getPoint())) return;
+
+        // for (Runnable task : onClick) {
+        //     if (task != null) task.run();
+        // }
     }
 }

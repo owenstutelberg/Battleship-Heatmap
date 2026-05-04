@@ -32,7 +32,7 @@ public abstract class AbstractGrid implements DisplayComponent {
                     (int) (pos.y + dimensions.y));
         }
 
-        for (int y = 0; y <= cols; y++) {
+        for (int y = 0; y <= rows; y++) {
             g.drawLine(
                     (int) pos.x,
                     (int) (pos.y + y * cellSize.y),

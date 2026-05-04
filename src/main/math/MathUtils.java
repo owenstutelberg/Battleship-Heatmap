@@ -8,7 +8,7 @@ public class MathUtils {
     }
 
     public static double getMin(double[][] array) {
-        double min = Integer.MAX_VALUE;
+        double min = Double.MAX_VALUE;
 
         for (double[] row : array) {
             for (double value : row) {
@@ -20,7 +20,7 @@ public class MathUtils {
     }
 
     public static double getMax(double[][] array) {
-        double max = Integer.MIN_VALUE;
+        double max = Double.MIN_VALUE;
 
         for (double[] row : array) {
             for (double value : row) {
@@ -39,7 +39,7 @@ public class MathUtils {
         return new Color(r, g, b);
     }
 
-    public static double getDistance(Vec2d pointOne, Vec2d pointTwo) {
+    public static double getDistanceSquared(Vec2d pointOne, Vec2d pointTwo) {
         return Math.pow(pointOne.x - pointTwo.x, 2) + Math.pow(pointOne.y - pointTwo.y, 2);
     }
 }
